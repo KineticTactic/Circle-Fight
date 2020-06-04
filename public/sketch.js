@@ -1,4 +1,5 @@
-const socket = io.connect("http://192.168.2.6:5500");
+// const socket = io.connect("http://192.168.2.6:5500");
+const socket = io();
 
 let player;
 let players = [];
