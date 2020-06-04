@@ -23,6 +23,8 @@ io.sockets.on("connection", (socket) => {
     socket.on("start", (data) => {
         console.log(data.pos.x, data.pos.y);
         players.push({ pos: data.pos, dir: data.dir, id: socket.id });
+
+        io.to(socket.id).emit("playerID", { id: socket.id });
     });
 
     socket.on("update", (data) => {

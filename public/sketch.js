@@ -24,6 +24,10 @@ function setup() {
     socket.on("disconnected", () => {
         socket.emit("remove");
     });
+
+    socket.on("playerID", (data) => {
+        player.id = data.id;
+    });
 }
 
 function draw() {
@@ -53,9 +57,9 @@ function draw() {
     player.edges();
 
     for (let p of players) {
-        // if (p !== player) {
-        renderPlayer(p);
-        // }
+        if (p.id !== player.id) {
+            renderPlayer(p);
+        }
     }
 
     player.render();
