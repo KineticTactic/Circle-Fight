@@ -5,7 +5,7 @@ const app = express();
 //     console.log("Server listening at http://localhost:" + server.address().port);
 // });
 
-const server = app.listen(5500);
+const server = app.listen(process.env.PORT || 5500);
 
 const io = require("socket.io")(server);
 
