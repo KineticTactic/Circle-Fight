@@ -3,7 +3,8 @@ class Player {
         this.pos = pos.copy();
         this.vel = createVector(0, 0);
         this.acc = createVector(0, 0);
-        this.dir = createVector(1, 0);
+        // this.dir = createVector(1, 0);
+        this.angle = 0;
         this.angVel = 0;
         this.r = 20;
         this.bullets = [];
@@ -17,6 +18,12 @@ class Player {
         this.angVel += t / 10;
     }
 
+    moveForward(f) {
+        let dir = createVector(f, 0);
+        dir.rotate(this.angle);
+        this.applyForce(dir);
+    }
+
     fire() {
         this.bullets.push(new Bullet(this.pos, this.dir));
     }
@@ -28,7 +35,7 @@ class Player {
         }
         return {
             pos: new p5.Vector(this.pos.x, this.pos.y),
-            dir: new p5.Vector(this.dir.x, this.dir.y),
+            angle: this.angle,
             bullets: b,
         };
     }
@@ -41,8 +48,9 @@ class Player {
 
         this.angVel = constrain(this.angVel, -0.1, 0.1);
         this.angVel *= 0.6;
-        this.dir.rotate(this.angVel);
-        this.angAcc = 0;
+        // this.dir.rotate(this.angVel);
+        this.angle += this.angVel;
+        // this.angAcc = 0;
 
         for (let bullet of this.bullets) {
             bullet.update();
@@ -75,8 +83,10 @@ class Player {
         fill(0, 125, 255);
         circle(this.pos.x, this.pos.y, this.r * 2);
 
+        let end = createVector(1, 0);
+        end.rotate(this.angle);
         stroke(255);
-        line(this.pos.x, this.pos.y, this.pos.x + this.dir.x * 40, this.pos.y + this.dir.y * 40);
+        line(this.pos.x, this.pos.y, this.pos.x + end.x * 40, this.pos.y + end.y * 40);
 
         for (let bullet of this.bullets) {
             bullet.render();

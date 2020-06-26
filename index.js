@@ -22,7 +22,7 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("start", (data) => {
         console.log(data.pos.x, data.pos.y);
-        players.push({ pos: data.pos, dir: data.dir, id: socket.id });
+        players.push({ pos: data.pos, angle: data.angle, id: socket.id });
 
         io.to(socket.id).emit("playerID", { id: socket.id });
     });
@@ -31,7 +31,7 @@ io.sockets.on("connection", (socket) => {
         for (let player of players) {
             if (player.id === socket.id) {
                 player.pos = data.pos;
-                player.dir = data.dir;
+                player.angle = data.angle;
                 player.bullets = data.bullets;
             }
         }

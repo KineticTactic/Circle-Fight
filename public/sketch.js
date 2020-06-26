@@ -14,7 +14,6 @@ function setup() {
 
     player = new Player(createVector(random(20, width - 20), random(20, height - 20)));
 
-    // socket.emit("start", player.data());
     socket.emit("start", player.data());
 
     socket.on("tick", (data) => {
@@ -34,7 +33,7 @@ function draw() {
     background(51);
 
     if (upKey) {
-        player.applyForce(p5.Vector.mult(player.dir, 1));
+        player.moveForward(1);
     }
     if (rightKey) {
         player.applyTorque(1);
@@ -46,11 +45,6 @@ function draw() {
     if (spaceKey && millis() - prevBullet >= bulletDelay) {
         player.fire();
         prevBullet = millis();
-    }
-
-    if (mouseIsPressed) {
-        player.dir = p5.Vector.sub(createVector(mouseX, mouseY), player.pos).normalize();
-        player.applyForce(p5.Vector.mult(player.dir, 1));
     }
 
     player.update();
@@ -73,8 +67,10 @@ function renderPlayer(p) {
     fill(255);
     circle(p.pos.x, p.pos.y, 40);
 
+    let end = createVector(1, 0);
+    end.rotate(p.angle);
     stroke(255);
-    line(p.pos.x, p.pos.y, p.pos.x + p.dir.x * 40, p.pos.y + p.dir.y * 40);
+    line(p.pos.x, p.pos.y, p.pos.x + end.x * 40, p.pos.y + end.y * 40);
 
     if (p.bullets) {
         for (let bullet of p.bullets) {
