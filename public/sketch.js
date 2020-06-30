@@ -21,7 +21,7 @@ function setup() {
         for (p of players) {
             if (p.id === player.id) {
                 if (p.takeDamage) {
-                    player.health -= 40;
+                    player.health -= 20;
                     console.log("HIT");
                 }
             }

@@ -11,6 +11,16 @@ class Player {
         this.bullets = [];
     }
 
+    respawn() {
+        this.pos = createVector(random(20, width - 20), random(20, height - 20));
+        this.vel = createVector(0, 0);
+        this.acc = createVector(0, 0);
+        this.angle = 0;
+        this.angVel = 0;
+        this.health = 100;
+        this.bullets = [];
+    }
+
     applyForce(f) {
         this.acc.add(f);
     }
@@ -42,6 +52,9 @@ class Player {
     }
 
     update() {
+        if (this.health <= 0) {
+            this.respawn();
+        }
         this.vel.add(this.acc);
         this.vel.mult(0.94);
         this.pos.add(this.vel);
