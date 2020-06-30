@@ -12,7 +12,7 @@ class Bullet {
     }
 
     update() {
-        this.pos.add(p5.Vector.mult(this.dir, 40));
+        this.pos.add(p5.Vector.mult(this.dir, 50));
     }
 
     isOffScreen() {

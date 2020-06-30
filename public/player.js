@@ -84,9 +84,20 @@ class Player {
         fill(0, 125, 255);
         circle(this.pos.x, this.pos.y, this.r * 2);
 
+        // Health bar
+        strokeWeight(4);
+        stroke(0, 255, 0);
+        line(
+            this.pos.x - this.r,
+            this.pos.y - this.r - 10,
+            this.pos.x - this.r + map(this.health, 0, 100, 0, this.r * 2),
+            this.pos.y - this.r - 10
+        );
+
         let end = createVector(1, 0);
         end.rotate(this.angle);
         stroke(255);
+        strokeWeight(2);
         line(this.pos.x, this.pos.y, this.pos.x + end.x * 40, this.pos.y + end.y * 40);
 
         for (let bullet of this.bullets) {
