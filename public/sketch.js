@@ -84,6 +84,7 @@ function renderPlayer(p) {
     let end = createVector(1, 0);
     end.rotate(p.angle);
     stroke(255);
+    strokeWeight(2);
     line(p.pos.x, p.pos.y, p.pos.x + end.x * 40, p.pos.y + end.y * 40);
 
     if (p.bullets) {
