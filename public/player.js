@@ -7,6 +7,7 @@ class Player {
         this.angle = 0;
         this.angVel = 0;
         this.r = 20;
+        this.health = 100;
         this.bullets = [];
     }
 
@@ -25,7 +26,7 @@ class Player {
     }
 
     fire() {
-        this.bullets.push(new Bullet(this.pos, this.dir));
+        this.bullets.push(new Bullet(this.pos, this.angle));
     }
 
     data() {

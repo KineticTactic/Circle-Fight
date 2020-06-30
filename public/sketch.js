@@ -6,7 +6,7 @@ let players = [];
 
 let upKey, downKey, leftKey, rightKey, spaceKey;
 
-let bulletDelay = 500;
+let bulletDelay = 300;
 let prevBullet = 0;
 
 function setup() {
@@ -18,6 +18,14 @@ function setup() {
 
     socket.on("tick", (data) => {
         players = data;
+        for (p of players) {
+            if (p.id === player.id) {
+                if (p.takeDamage) {
+                    player.health -= 40;
+                    console.log("HIT");
+                }
+            }
+        }
     });
 
     socket.on("disconnected", () => {
@@ -93,7 +101,7 @@ function keyPressed() {
     if (keyCode === RIGHT_ARROW) {
         rightKey = true;
     }
-    if (key === " ") {
+    if (keyCode === 32) {
         spaceKey = true;
     }
 }
@@ -111,7 +119,7 @@ function keyReleased() {
     if (keyCode === RIGHT_ARROW) {
         rightKey = false;
     }
-    if (key === " ") {
+    if (keyCode === 32) {
         spaceKey = false;
     }
 }

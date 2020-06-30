@@ -13,7 +13,30 @@ app.use(express.static("public"));
 
 let players = [];
 
+function checkCollision(player, bullet) {
+    let dist = Math.sqrt((player.pos.x - bullet.pos.x) ** 2 + (player.pos.y - bullet.pos.y) ** 2);
+    if (dist < 30) {
+        return true;
+    }
+}
+
 setInterval(() => {
+    let bullets = players.map((p) => p.bullets);
+    bullets = bullets.flat();
+    for (let player of players) {
+        let damage = false;
+        for (let bullet of bullets) {
+            if (bullet !== undefined) {
+                if (checkCollision(player, bullet)) {
+                    player.takeDamage = true;
+                    damage = true;
+                }
+            }
+        }
+        if (!damage) {
+            player.takeDamage = false;
+        }
+    }
     io.emit("tick", players);
 }, 16);
 
@@ -33,6 +56,7 @@ io.sockets.on("connection", (socket) => {
                 player.pos = data.pos;
                 player.angle = data.angle;
                 player.bullets = data.bullets;
+                console.log(player.bullets);
             }
         }
     });

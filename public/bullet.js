@@ -1,7 +1,7 @@
 class Bullet {
-    constructor(pos, dir) {
+    constructor(pos, angle) {
         this.pos = pos.copy();
-        this.dir = dir.copy();
+        this.dir = p5.Vector.fromAngle(angle);
     }
 
     data() {
@@ -12,7 +12,7 @@ class Bullet {
     }
 
     update() {
-        this.pos.add(p5.Vector.mult(this.dir, 10));
+        this.pos.add(p5.Vector.mult(this.dir, 40));
     }
 
     isOffScreen() {
