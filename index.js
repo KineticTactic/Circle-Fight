@@ -56,6 +56,7 @@ io.sockets.on("connection", (socket) => {
                 player.pos = data.pos;
                 player.angle = data.angle;
                 player.bullets = data.bullets;
+                player.health = data.health;
             }
         }
     });

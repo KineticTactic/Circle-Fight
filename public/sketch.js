@@ -75,6 +75,12 @@ function renderPlayer(p) {
     fill(255);
     circle(p.pos.x, p.pos.y, 40);
 
+    // Health bar
+    strokeWeight(4);
+    stroke(0, 255, 0);
+    line(p.pos.x - player.r, p.pos.y - player.r - 10, p.pos.x - player.r + map(p.health, 0, 100, 0, player.r * 2), p.pos.y - player.r - 10);
+    console.log(p.health);
+
     let end = createVector(1, 0);
     end.rotate(p.angle);
     stroke(255);

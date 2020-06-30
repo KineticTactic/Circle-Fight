@@ -48,6 +48,7 @@ class Player {
             pos: new p5.Vector(this.pos.x, this.pos.y),
             angle: this.angle,
             bullets: b,
+            health: this.health
         };
     }
 
