@@ -4,8 +4,6 @@ const socket = io();
 let player;
 let players = [];
 
-let upKey, downKey, leftKey, rightKey, spaceKey;
-
 let bulletDelay = 300;
 let prevBullet = 0;
 
@@ -40,17 +38,17 @@ function setup() {
 function draw() {
     background(51);
 
-    if (upKey) {
+    if (keyIsDown(UP_ARROW)) {
         player.moveForward(1);
     }
-    if (rightKey) {
+    if (keyIsDown(RIGHT_ARROW)) {
         player.applyTorque(1);
     }
-    if (leftKey) {
+    if (keyIsDown(LEFT_ARROW)) {
         player.applyTorque(-1);
     }
 
-    if (spaceKey && millis() - prevBullet >= bulletDelay) {
+    if ((keyIsDown(32) || keyIsDown(70)) && millis() - prevBullet >= bulletDelay) {
         player.fire();
         prevBullet = millis();
     }
@@ -92,42 +90,6 @@ function renderPlayer(p) {
             strokeWeight(10);
             point(bullet.pos.x, bullet.pos.y);
         }
-    }
-}
-
-function keyPressed() {
-    if (keyCode === UP_ARROW) {
-        upKey = true;
-    }
-    if (keyCode === DOWN_ARROW) {
-        downKey = true;
-    }
-    if (keyCode === LEFT_ARROW) {
-        leftKey = true;
-    }
-    if (keyCode === RIGHT_ARROW) {
-        rightKey = true;
-    }
-    if (keyCode === 32) {
-        spaceKey = true;
-    }
-}
-
-function keyReleased() {
-    if (keyCode === UP_ARROW) {
-        upKey = false;
-    }
-    if (keyCode === DOWN_ARROW) {
-        downKey = false;
-    }
-    if (keyCode === LEFT_ARROW) {
-        leftKey = false;
-    }
-    if (keyCode === RIGHT_ARROW) {
-        rightKey = false;
-    }
-    if (keyCode === 32) {
-        spaceKey = false;
     }
 }
 
