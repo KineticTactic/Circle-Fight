@@ -61,6 +61,10 @@ io.sockets.on("connection", (socket) => {
         }
     });
 
+    socket.on("message", (data) => {
+        io.emit("message", data);
+    });
+
     socket.on("disconnect", () => {
         for (let i = 0; i < players.length; i++) {
             if (players[i].id === socket.id) {

@@ -7,8 +7,15 @@ let players = [];
 let bulletDelay = 300;
 let prevBullet = 0;
 
+let onlineElt, inputElt, sendBtn;
+
 function setup() {
-    createCanvas(800, 600);
+    let canvas = createCanvas(800, 600);
+    canvas.parent(document.getElementsByClassName("canvas-container")[0]);
+
+    onlineElt = document.getElementById("onlineElt");
+    inputElt = document.getElementById("chatInput");
+    sendBtn = document.getElementById("sendBtn");
 
     player = new Player(createVector(random(20, width - 20), random(20, height - 20)));
 
@@ -32,6 +39,15 @@ function setup() {
 
     socket.on("playerID", (data) => {
         player.id = data.id;
+    });
+
+    socket.on("message", (data) => {
+        let li = document.createElement("li");
+        li.appendChild(document.createTextNode(data));
+        document.getElementById("messages").appendChild(li);
+        let list = document.getElementById("messages");
+
+        list.scrollTop = list.scrollHeight;
     });
 }
 
@@ -64,6 +80,9 @@ function draw() {
 
     player.render();
 
+    // HTML
+    onlineElt.innerHTML = `Players Online: ${players.length}`;
+
     socket.emit("update", player.data());
 }
 
@@ -77,7 +96,6 @@ function renderPlayer(p) {
     strokeWeight(4);
     stroke(0, 255, 0);
     line(p.pos.x - player.r, p.pos.y - player.r - 10, p.pos.x - player.r + map(p.health, 0, 100, 0, player.r * 2), p.pos.y - player.r - 10);
-    console.log(p.health);
 
     let end = createVector(1, 0);
     end.rotate(p.angle);
@@ -92,6 +110,20 @@ function renderPlayer(p) {
         }
     }
 }
+
+document.getElementById("sendBtn").onclick = () => {
+    if (inputElt.value.length !== 0) {
+        socket.emit("message", inputElt.value);
+    }
+};
+
+document.getElementById("chatInput").addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("sendBtn").click();
+        document.getElementById("chatInput").value = "";
+    }
+});
 
 window.onbeforeunload = function (event) {
     socket.emit("remove");

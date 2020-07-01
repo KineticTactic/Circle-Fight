@@ -5,10 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Simple Multiplayer Game</title>
 
+        <link rel="stylesheet" href="style.css" />
+
         <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
     </head>
     <body>
+        <div class="container">
+            <div class="canvas-container"></div>
+            <div class="side-container">
+                <div class="online">
+                    <h2 id="onlineElt"></h2>
+                </div>
+                <div class="chat-container">
+                    <ul id="messages"></ul>
+                    <input id="chatInput" /><button id="sendBtn">Send</button>
+                </div>
+            </div>
+        </div>
         <script src="bullet.js"></script>
         <script src="player.js"></script>
         <script src="sketch.js"></script>
