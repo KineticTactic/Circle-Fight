@@ -25,8 +25,14 @@ canvas {
 }
 
 .online {
-    padding-left: 20%;
+    padding-top: 0%;
+    padding-left: 5%;
     font-family: sans-serif;
+}
+
+.statsElt {
+    /* padding: 0%;
+    margin: 0; */
 }
 
 .chat-container {
@@ -36,7 +42,7 @@ canvas {
 }
 
 #messages {
-    height: 480px;
+    height: 450px;
     list-style: none;
     font-family: sans-serif;
     overflow: hidden;

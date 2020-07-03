@@ -4,16 +4,20 @@ const socket = io();
 let player;
 let players = [];
 
+let ping = 0;
+
 let bulletDelay = 300;
 let prevBullet = 0;
 
-let onlineElt, inputElt, sendBtn;
+let onlineElt, pingElt, inputElt, sendBtn;
+let pingTestStartMillis = 0;
 
 function setup() {
     let canvas = createCanvas(800, 600);
     canvas.parent(document.getElementsByClassName("canvas-container")[0]);
 
     onlineElt = document.getElementById("onlineElt");
+    pingElt = document.getElementById("pingElt");
     inputElt = document.getElementById("chatInput");
     sendBtn = document.getElementById("sendBtn");
 
@@ -47,6 +51,14 @@ function setup() {
 
         list.scrollTop = list.scrollHeight;
     });
+
+    socket.on("pong", () => {
+        ping = millis() - pingTestStartMillis;
+        pingElt.innerHTML = `Ping: ${ping.toFixed(3)}ms`;
+    });
+
+    // getPing();
+    setInterval(getPing, 5000);
 }
 
 function draw() {
@@ -102,6 +114,11 @@ function renderPlayer(p) {
             point(bullet.pos.x, bullet.pos.y);
         }
     }
+}
+
+function getPing() {
+    pingTestStartMillis = millis();
+    socket.emit("testPing");
 }
 
 document.getElementById("sendBtn").onclick = () => {

@@ -86,6 +86,10 @@ io.sockets.on("connection", (socket) => {
         io.emit("message", data);
     });
 
+    socket.on("testPing", () => {
+        io.to(socket.id).emit("pong");
+    });
+
     socket.on("disconnect", () => {
         for (let i = 0; i < players.length; i++) {
             if (players[i].id === socket.id) {
