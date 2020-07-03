@@ -19,16 +19,14 @@ function setup() {
 
     player = new Player(createVector(random(20, width - 20), random(20, height - 20)));
 
-    socket.emit("start", player.data());
+    socket.emit("start");
 
     socket.on("tick", (data) => {
-        players = data;
+        players = data.players;
+        // console.log(data);
         for (p of players) {
             if (p.id === player.id) {
-                if (p.takeDamage) {
-                    player.health -= 20;
-                    console.log("HIT");
-                }
+                player.copy(p);
             }
         }
     });
@@ -55,22 +53,19 @@ function draw() {
     background(51);
 
     if (keyIsDown(UP_ARROW)) {
-        player.moveForward(1);
+        socket.emit("input", "up");
     }
     if (keyIsDown(RIGHT_ARROW)) {
-        player.applyTorque(1);
+        socket.emit("input", "right");
     }
     if (keyIsDown(LEFT_ARROW)) {
-        player.applyTorque(-1);
+        socket.emit("input", "left");
     }
 
     if ((keyIsDown(32) || keyIsDown(70)) && millis() - prevBullet >= bulletDelay) {
-        player.fire();
+        socket.emit("fire");
         prevBullet = millis();
     }
-
-    player.update();
-    player.edges();
 
     for (let p of players) {
         if (p.id !== player.id) {
@@ -82,8 +77,6 @@ function draw() {
 
     // HTML
     onlineElt.innerHTML = `Players Online: ${players.length}`;
-
-    socket.emit("update", player.data());
 }
 
 function renderPlayer(p) {
