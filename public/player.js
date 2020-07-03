@@ -21,14 +21,6 @@ class Player {
         this.bullets = [];
     }
 
-    copy(p) {
-        this.pos.x = p.pos.x;
-        this.pos.y = p.pos.y;
-        this.angle = p.angle;
-        this.health = p.health;
-        this.bullets = p.bullets;
-    }
-
     applyForce(f) {
         this.acc.add(f);
     }
@@ -56,7 +48,7 @@ class Player {
             pos: new p5.Vector(this.pos.x, this.pos.y),
             angle: this.angle,
             bullets: b,
-            health: this.health,
+            health: this.health
         };
     }
 
@@ -123,9 +115,7 @@ class Player {
         line(this.pos.x, this.pos.y, this.pos.x + end.x * 40, this.pos.y + end.y * 40);
 
         for (let bullet of this.bullets) {
-            // bullet.render();
-            strokeWeight(10);
-            point(bullet.pos.x, bullet.pos.y);
+            bullet.render();
         }
     }
 }
