@@ -1,5 +1,5 @@
 const Vector = require("./Vector");
-const Bullet = require("./Bullet");
+const Bullet = require("./bullet");
 
 function constrain(val, min, max) {
     if (val < min) return min;
