@@ -65,13 +65,13 @@ function draw() {
     background(51);
 
     if (keyIsDown(UP_ARROW)) {
-        socket.emit("input", "up");
+        socket.emit("up");
     }
     if (keyIsDown(RIGHT_ARROW)) {
-        socket.emit("input", "right");
+        socket.emit("right");
     }
     if (keyIsDown(LEFT_ARROW)) {
-        socket.emit("input", "left");
+        socket.emit("left");
     }
 
     if ((keyIsDown(32) || keyIsDown(70)) && millis() - prevBullet >= bulletDelay) {

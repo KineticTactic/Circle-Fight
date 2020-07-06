@@ -7,7 +7,7 @@ const Player = require("./player");
 //     console.log("Server listening at http://localhost:" + server.address().port);
 // });
 
-const server = app.listen(process.env.PORT || 5500);
+const server = app.listen(process.env.PORT || 5500, "192.168.2.10");
 
 const io = require("socket.io")(server);
 
@@ -68,14 +68,16 @@ io.sockets.on("connection", (socket) => {
         io.to(socket.id).emit("playerID", { id: socket.id });
     });
 
-    socket.on("input", (data) => {
-        if (data === "up") {
-            io.sockets.sockets[socket.id].player.moveForward(1);
-        } else if (data === "right") {
-            io.sockets.sockets[socket.id].player.applyTorque(1);
-        } else if (data === "left") {
-            io.sockets.sockets[socket.id].player.applyTorque(-1);
-        }
+    socket.on("up", () => {
+        io.sockets.sockets[socket.id].player.moveForward(1);
+    });
+
+    socket.on("right", () => {
+        io.sockets.sockets[socket.id].player.applyTorque(1);
+    });
+
+    socket.on("left", () => {
+        io.sockets.sockets[socket.id].player.applyTorque(-1);
     });
 
     socket.on("fire", () => {
