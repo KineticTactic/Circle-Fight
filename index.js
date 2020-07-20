@@ -10,6 +10,8 @@ const io = require("socket.io")(server);
 
 app.use(express.static("public"));
 
+const worldSize = 2000;
+
 function checkCollision(player, bullet) {
     let dist = Math.sqrt((player.pos.x - bullet.pos.x) ** 2 + (player.pos.y - bullet.pos.y) ** 2);
     if (dist < 30) {
@@ -24,7 +26,7 @@ function tick() {
     Object.keys(io.sockets.sockets).forEach((id) => {
         if (io.sockets.sockets[id].player) {
             io.sockets.sockets[id].player.update();
-            io.sockets.sockets[id].player.edges();
+            io.sockets.sockets[id].player.edges(worldSize);
         }
     });
 
@@ -65,7 +67,7 @@ io.sockets.on("connection", (socket) => {
     socket.on("start", () => {
         io.sockets.sockets[socket.id].player = new Player(socket.id);
 
-        io.to(socket.id).emit("playerID", { id: socket.id });
+        io.to(socket.id).emit("gameInfo", { id: socket.id, worldSize: worldSize });
     });
 
     socket.on("up", () => {

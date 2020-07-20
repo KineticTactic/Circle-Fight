@@ -80,21 +80,21 @@ class Player {
         }
     }
 
-    edges() {
-        if (this.pos.x < 0) {
-            this.pos.x = 800;
-        } else if (this.pos.x > 800) {
-            this.pos.x = 0;
+    edges(worldSize) {
+        if (this.pos.x < this.r) {
+            this.pos.x = this.r;
+        } else if (this.pos.x > worldSize - this.r) {
+            this.pos.x = worldSize - this.r;
         }
 
-        if (this.pos.y < 0) {
-            this.pos.y = 600;
-        } else if (this.pos.y > 600) {
-            this.pos.y = 0;
+        if (this.pos.y < this.r) {
+            this.pos.y = this.r;
+        } else if (this.pos.y > worldSize - this.r) {
+            this.pos.y = worldSize - this.r;
         }
 
         for (let i = this.bullets.length - 1; i >= 0; i--) {
-            if (this.bullets[i].isOffScreen()) {
+            if (this.bullets[i].isOffScreen(worldSize)) {
                 this.bullets.splice(i, 1);
             }
         }

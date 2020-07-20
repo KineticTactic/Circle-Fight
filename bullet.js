@@ -19,13 +19,8 @@ class Bullet {
         this.pos.add(Vector.mult(this.dir, 50));
     }
 
-    isOffScreen() {
-        return this.pos.x < -20 || this.pos.x > 800 + 20 || this.pos.y < -20 || this.pos.y > 600 + 20;
-    }
-
-    render() {
-        strokeWeight(10);
-        point(this.pos.x, this.pos.y);
+    isOffScreen(worldSize) {
+        return this.pos.x < -20 || this.pos.x > worldSize + 20 || this.pos.y < -20 || this.pos.y > worldSize + 20;
     }
 }
 

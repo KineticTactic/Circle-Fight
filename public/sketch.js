@@ -4,6 +4,9 @@ const socket = io();
 let player;
 let players = [];
 
+let worldSize;
+let minimapSize = 150;
+
 let ping = 0;
 
 let bulletDelay = 300;
@@ -34,8 +37,9 @@ function setup() {
         }
     });
 
-    socket.on("playerID", (data) => {
+    socket.on("gameInfo", (data) => {
         player.id = data.id;
+        worldSize = data.worldSize;
     });
 
     socket.on("message", (data) => {
@@ -73,11 +77,25 @@ function draw() {
         prevBullet = millis();
     }
 
+    for (let i = 0; i < worldSize; i += 100) {
+        stroke(255, 50);
+        strokeWeight(1);
+        line(width / 2 - player.pos.x, height / 2 - player.pos.y + i, width / 2 - player.pos.x + worldSize, height / 2 - player.pos.y + i);
+        line(width / 2 - player.pos.x + i, height / 2 - player.pos.y, width / 2 - player.pos.x + i, height / 2 - player.pos.y + worldSize);
+    }
+
+    stroke(255, 0, 0);
+    strokeWeight(10);
+    noFill();
+    rect(width / 2 - player.pos.x, height / 2 - player.pos.y, worldSize, worldSize);
+
     for (let p of players) {
         if (p.id !== player.id) {
             renderPlayer(p);
         }
     }
+
+    renderMinimap(players);
 
     player.render();
 
@@ -89,24 +107,52 @@ function renderPlayer(p) {
     stroke(100);
     strokeWeight(2);
     fill(255);
-    circle(p.pos.x, p.pos.y, 40);
+    circle(width / 2 - player.pos.x + p.pos.x, height / 2 - player.pos.y + p.pos.y, 40);
 
     // Health bar
     strokeWeight(4);
     stroke(0, 255, 0);
-    line(p.pos.x - player.r, p.pos.y - player.r - 10, p.pos.x - player.r + map(p.health, 0, 100, 0, player.r * 2), p.pos.y - player.r - 10);
+    line(
+        width / 2 - player.pos.x + p.pos.x - player.r,
+        height / 2 - player.pos.y + p.pos.y - player.r - 10,
+        width / 2 - player.pos.x + p.pos.x - player.r + map(p.health, 0, 100, 0, player.r * 2),
+        height / 2 - player.pos.y + p.pos.y - player.r - 10
+    );
 
     let end = createVector(1, 0);
     end.rotate(p.angle);
     stroke(255);
     strokeWeight(2);
-    line(p.pos.x, p.pos.y, p.pos.x + end.x * 40, p.pos.y + end.y * 40);
+    line(
+        width / 2 - player.pos.x + p.pos.x,
+        height / 2 - player.pos.y + p.pos.y,
+        width / 2 - player.pos.x + p.pos.x + end.x * 40,
+        height / 2 - player.pos.y + p.pos.y + end.y * 40
+    );
 
     if (p.bullets) {
         for (let bullet of p.bullets) {
             strokeWeight(10);
             point(bullet.pos.x, bullet.pos.y);
         }
+    }
+}
+
+function renderMinimap(players) {
+    stroke(255, 50);
+    strokeWeight(2);
+    fill(0, 100);
+    rect(width - minimapSize, 0, width, minimapSize);
+    for (let p of players) {
+        if (p.id === player.id) {
+            stroke(0, 125, 255, 200);
+        } else {
+            stroke(255, 200);
+        }
+        strokeWeight(6);
+        let pX = map(p.pos.x, 0, worldSize, 0, minimapSize);
+        let pY = map(p.pos.y, 0, worldSize, 0, minimapSize);
+        point(width - minimapSize + pX, pY);
     }
 }
 
