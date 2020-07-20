@@ -4,15 +4,7 @@ class Bullet {
     constructor(pos, angle) {
         this.pos = pos.copy();
         this.dir = new Vector(1, 0);
-        // this.dir = p5.Vector.fromAngle(angle);
         this.dir.rotate(angle);
-    }
-
-    data() {
-        return {
-            pos: new p5.Vector(this.pos.x, this.pos.y),
-            dir: new p5.Vector(this.dir.x, this.dir.y),
-        };
     }
 
     update() {

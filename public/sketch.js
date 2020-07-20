@@ -24,7 +24,7 @@ function setup() {
     inputElt = document.getElementById("chatInput");
     sendBtn = document.getElementById("sendBtn");
 
-    player = new Player(createVector(random(20, width - 20), random(20, height - 20)));
+    player = new Player();
 
     socket.emit("start");
 

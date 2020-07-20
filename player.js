@@ -1,15 +1,10 @@
 const Vector = require("./Vector");
 const Bullet = require("./bullet");
-
-function constrain(val, min, max) {
-    if (val < min) return min;
-    else if (val > max) return max;
-    else return val;
-}
+const { constrain } = require("./utils");
 
 class Player {
-    constructor(id) {
-        this.pos = new Vector(Math.random() * 760 + 20, Math.random() * 660 + 20);
+    constructor(id, worldSize) {
+        this.pos = new Vector(Math.random() * (worldSize - 40) + 20, Math.random() * (worldSize - 40) + 20);
 
         this.vel = new Vector(0, 0);
         this.acc = new Vector(0, 0);
@@ -81,17 +76,8 @@ class Player {
     }
 
     edges(worldSize) {
-        if (this.pos.x < this.r) {
-            this.pos.x = this.r;
-        } else if (this.pos.x > worldSize - this.r) {
-            this.pos.x = worldSize - this.r;
-        }
-
-        if (this.pos.y < this.r) {
-            this.pos.y = this.r;
-        } else if (this.pos.y > worldSize - this.r) {
-            this.pos.y = worldSize - this.r;
-        }
+        this.pos.x = constrain(this.pos.x, this.r, worldSize - this.r);
+        this.pos.y = constrain(this.pos.y, this.r, worldSize - this.r);
 
         for (let i = this.bullets.length - 1; i >= 0; i--) {
             if (this.bullets[i].isOffScreen(worldSize)) {

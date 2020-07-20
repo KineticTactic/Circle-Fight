@@ -65,7 +65,7 @@ io.sockets.on("connection", (socket) => {
     console.log("New Connection: " + socket.id);
 
     socket.on("start", () => {
-        io.sockets.sockets[socket.id].player = new Player(socket.id);
+        io.sockets.sockets[socket.id].player = new Player(socket.id, worldSize);
 
         io.to(socket.id).emit("gameInfo", { id: socket.id, worldSize: worldSize });
     });
