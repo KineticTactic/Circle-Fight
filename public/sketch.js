@@ -27,16 +27,11 @@ function setup() {
 
     socket.on("tick", (data) => {
         players = data.players;
-        // console.log(data);
         for (p of players) {
             if (p.id === player.id) {
                 player.copy(p);
             }
         }
-    });
-
-    socket.on("disconnected", () => {
-        socket.emit("remove");
     });
 
     socket.on("playerID", (data) => {
@@ -57,8 +52,7 @@ function setup() {
         pingElt.innerHTML = `Ping: ${ping.toFixed(3)}ms`;
     });
 
-    // getPing();
-    setInterval(getPing, 5000);
+    setInterval(getPing, 2000);
 }
 
 function draw() {

@@ -2,18 +2,13 @@ const express = require("express");
 const app = express();
 
 const Player = require("./player");
-
-// const server = app.listen(5500, () => {
-//     console.log("Server listening at http://localhost:" + server.address().port);
-// });
+const { millis } = require("./utils");
 
 const server = app.listen(process.env.PORT || 5500);
 
 const io = require("socket.io")(server);
 
 app.use(express.static("public"));
-
-let players = [];
 
 function checkCollision(player, bullet) {
     let dist = Math.sqrt((player.pos.x - bullet.pos.x) ** 2 + (player.pos.y - bullet.pos.y) ** 2);
@@ -22,8 +17,10 @@ function checkCollision(player, bullet) {
     }
 }
 
-setInterval(() => {
+function tick() {
     let players = [];
+
+    // Update all players
     Object.keys(io.sockets.sockets).forEach((id) => {
         if (io.sockets.sockets[id].player) {
             io.sockets.sockets[id].player.update();
@@ -31,6 +28,7 @@ setInterval(() => {
         }
     });
 
+    // Check if bullet collides, and push player data to players array
     Object.keys(io.sockets.sockets).forEach((id) => {
         if (io.sockets.sockets[id].player) {
             for (let bullet of io.sockets.sockets[id].player.bullets) {
@@ -57,7 +55,9 @@ setInterval(() => {
     });
 
     io.emit("tick", { players: players });
-}, 16);
+}
+
+setInterval(tick, 1000 / 60);
 
 io.sockets.on("connection", (socket) => {
     console.log("New Connection: " + socket.id);
@@ -90,15 +90,5 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("testPing", () => {
         io.to(socket.id).emit("pong");
-    });
-
-    socket.on("disconnect", () => {
-        for (let i = 0; i < players.length; i++) {
-            if (players[i].id === socket.id) {
-                console.log("User Disconnected: " + socket.id);
-                players.splice(i, 1);
-                break;
-            }
-        }
     });
 });
