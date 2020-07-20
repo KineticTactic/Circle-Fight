@@ -1,5 +1,5 @@
 {
-    "name": "multiplayer-game",
+    "name": "circle-fight",
     "version": "1.0.0",
     "description": "A simple multiplayer game using node.js",
     "main": "index.js",
@@ -9,7 +9,8 @@
     "keywords": [
         "node",
         "multiplayer",
-        "game"
+        "game",
+        "circle-fight"
     ],
     "author": "KineticTactic",
     "license": "MIT",
